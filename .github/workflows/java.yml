@@ -1,0 +1,23 @@
+name: "Java CI"
+
+on: ["pull_request", "push"]
+
+jobs:
+  preserve:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: Cancel Previous Workflow Runs
+        uses: n1hility/cancel-previous-runs@v2.0
+  lint:
+    runs-on: "ubuntu-latest"
+    steps: 
+      - uses: "@actions/checkout"
+        with:
+          fetch-depth: 0
+      - name: Lint files changed.
+        uses: github/super-linter@v3
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_JAVA: true
+          VALIDATE_MARKDOWN: true
+  # build:

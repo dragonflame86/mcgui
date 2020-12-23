@@ -8,6 +8,8 @@ jobs:
     steps:
       - name: Cancel Previous Workflow Runs
         uses: n1hility/cancel-previous-runs@v2.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
   lint:
     runs-on: "ubuntu-latest"
     steps: 

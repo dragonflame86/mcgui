@@ -3,7 +3,7 @@
  * Failure to follow this license will result in further action.
  */
 
-package cal.codes.mcgui.guml;
+package cal.codes.mcgui.api.guml;
 
 public class GumlGUI {
 }

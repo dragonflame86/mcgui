@@ -3,11 +3,11 @@
  * Failure to follow this license will result in further action.
  */
 
-package cal.codes.mcgui.guml.exceptions;
+package cal.codes.mcgui.exceptions;
 
 import java.text.MessageFormat;
 
-public class SyntaxError {
+public class SyntaxException extends Exception {
     /**
      * The line the error occured on.
      */
@@ -20,7 +20,7 @@ public class SyntaxError {
      * The character number.
      */
     public int characterNumber;
-    public SyntaxError(String ln, int lnNum, int charNum) {
+    public SyntaxException(String ln, int lnNum, int charNum) {
         line = ln; lineNumber = lnNum; characterNumber = charNum;
     }
 

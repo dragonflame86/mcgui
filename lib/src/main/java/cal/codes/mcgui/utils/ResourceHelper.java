@@ -3,13 +3,11 @@
  * Failure to follow this license will result in further action.
  */
 
-package cal.codes.mcgui.api.utils;
+package cal.codes.mcgui.utils;
 
-import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Random;
 

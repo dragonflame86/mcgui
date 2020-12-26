@@ -1,3 +1,5 @@
+import net.fabricmc.loom.task.RemapJarTask
+
 plugins {
     id 'fabric-loom' version '0.6-SNAPSHOT'
     id 'maven-publish'
@@ -10,6 +12,20 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+repositories {
+    mavenLocal()
+    maven {
+        name = "AperLambda"
+        url = 'https://aperlambda.github.io/maven'
+    }
+    maven { url = "https://jitpack.io" }
+}
+
+configurations {
+    shadow
+    api.extendsFrom shadow
+}
+
 dependencies {
 
     // FabricMC Core
@@ -17,6 +33,16 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    // SpruceUI
+    modImplementation "com.github.lambdaurora:spruceui:${project.spruceui_version}"
+    include "com.github.lambdaurora:spruceui:${project.spruceui_version}"
+
+    shadow ("org.aperlambda:lambdajcommon:1.8.1") {
+        // Minecraft already has all the google dependencies.
+        exclude group: 'com.google.code.gson'
+        exclude group: 'com.google.guava'
+    }
 }
 
 processResources {
@@ -39,6 +65,26 @@ tasks.withType(JavaCompile) {
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
     from sourceSets.main.allSource
+}
+
+task shadowJar(type: Jar) {
+    archiveClassifier.set("dev")
+
+    from sourceSets.main.output
+
+    from {
+        configurations.shadow.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+task shadowRemapJar(type: RemapJarTask) {
+    dependsOn shadowJar
+
+    input = file("${project.buildDir}/libs/$archivesBaseName-$version-dev.jar")
+    archiveName = "${archivesBaseName}-${version}.jar"
+    addNestedDependencies = true
 }
 
 jar {

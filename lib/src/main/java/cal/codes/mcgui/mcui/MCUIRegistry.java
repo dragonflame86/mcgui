@@ -3,7 +3,7 @@
  * Failure to follow this license will result in further action.
  */
 
-package cal.codes.mcgui.api.guml;
+package cal.codes.mcgui.mcui;
 
 import cal.codes.mcgui.exceptions.RegistryNotFoundException;
 import net.minecraft.util.Identifier;
@@ -11,14 +11,15 @@ import net.minecraft.util.Identifier;
 import java.io.File;
 import java.util.HashMap;
 
-public class GumlRegistry {
-    private static HashMap<Identifier, File> Registry = new HashMap<Identifier, File>();
+public class MCUIRegistry {
+    private static HashMap<String, File> Registry = new HashMap<String, File>();
 
-    public static void register(Identifier id, File file) {
+    public static void register(String id, File file) {
         Registry.put(id, file);
     }
-    public static void fetch(Identifier id) throws RegistryNotFoundException {
+    public static File fetch(String id) throws RegistryNotFoundException {
         File f = Registry.get(id);
         if(f == null) throw new RegistryNotFoundException("Key (" + id.toString() + ") does not exist.");
+        return f;
     }
 }

@@ -3,7 +3,9 @@
  * Failure to follow this license will result in further action.
  */
 
-package cal.codes.mcgui.api.guml;
+package cal.codes.mcgui.mcui.elements;
 
-public class GumlGUI {
+public enum UIType {
+    ROOT,
+    LABEL
 }

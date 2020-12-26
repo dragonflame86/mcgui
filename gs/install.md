@@ -24,7 +24,6 @@ Reload your gradle project and you should be ready.
 
 ### Next Steps
 
-- Creating a mcui file.
-- Registering the file.
-- Adding buttons with methods.
+- [Creating a mcui file.](/gs/createfile.md)
+
 

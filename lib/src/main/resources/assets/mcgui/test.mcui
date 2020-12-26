@@ -1,9 +1,0 @@
-<!--
-  ~ MCGui is licensed under the Mozilla Public License 2.0
-  ~ Failure to follow this license will result in further action.
-  -->
-
-<Screen title="test">
-    <Label x="50" y="50" fixedWidth="120">I want you to press this button please.</Label>
-    <Button x="75" y="75" width="120" height="20" method="mcgui:test_method">Press me!</Button>
-</Screen>

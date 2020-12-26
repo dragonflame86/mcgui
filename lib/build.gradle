@@ -1,5 +1,6 @@
 import net.fabricmc.loom.task.RemapJarTask
 
+
 plugins {
     id 'fabric-loom' version '0.6-SNAPSHOT'
     id 'maven-publish'
@@ -90,4 +91,33 @@ task shadowRemapJar(type: RemapJarTask) {
 
 jar {
     from "LICENSE"
+}
+
+publishing {
+    publications {
+        publishFalsemaven(MavenPublication) {
+            artifactId = project.artifactId
+            artifact(remapJar) {
+                builtBy remapJar
+            }
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name "falsemaven"
+            url "https://maven.falseresync.ru/releases"
+            credentials {
+                InputStreamReader r = new InputStreamReader(System.in);
+                BufferedReader br = new BufferedReader(r);
+                System.out.println("Username?")
+                username = br.readLine()
+                System.out.println("Password?")
+                password = br.readLine()
+            }
+        }
+    }
 }

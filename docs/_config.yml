@@ -1,5 +1,0 @@
-theme: jekyll-theme-minimal
-title: "McGUI"
-description: "A GUI wrapper for fabric. Simple HTML like syntax and easy to use."
-logo: ./logo.png
-show_downloads: "false"

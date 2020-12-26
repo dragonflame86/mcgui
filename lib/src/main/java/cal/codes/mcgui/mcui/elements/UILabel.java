@@ -6,10 +6,11 @@
 package cal.codes.mcgui.mcui.elements;
 
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 
 public class UILabel extends UIElement {
 
-    public String contents;
+    public Text contents;
     public int fixedWidth;
     public int x;
     public int y;
@@ -18,20 +19,11 @@ public class UILabel extends UIElement {
         type = UIType.LABEL;
     }
 
-    public UILabel(String id, String contents, int x, int y, int fixedWidth) {
-        super(id);
-        type = UIType.LABEL;
-        this.contents = contents;
-        this.x = x;
-        this.y = y;
-        this.fixedWidth = fixedWidth;
-    }
-
     public String getContents() {
-        return contents;
+        return contents.asString();
     }
 
-    public LiteralText getContentsAsLiteralText() {
-        return new LiteralText(contents);
+    public Text getContentsAsText() {
+        return contents;
     }
 }

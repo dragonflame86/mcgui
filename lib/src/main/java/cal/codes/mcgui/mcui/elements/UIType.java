@@ -7,5 +7,6 @@ package cal.codes.mcgui.mcui.elements;
 
 public enum UIType {
     ROOT,
-    LABEL
+    LABEL,
+    BUTTON,
 }

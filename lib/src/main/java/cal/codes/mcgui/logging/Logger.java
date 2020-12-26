@@ -12,7 +12,7 @@ public class Logger {
     public static void warn(Object content) {
         System.out.println("[MCGUI] [WARN] " + content.toString());
     }
-    public static void error(Object content) {
+    private static void error(Object content) {
         System.out.println("[MCGUI] [ERR!] " + content.toString());
     }
 }

@@ -6,14 +6,21 @@
 package cal.codes.mcgui.mcui;
 
 import cal.codes.mcgui.exceptions.RegistryNotFoundException;
+import cal.codes.mcgui.utils.ResourceHelper;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
 import java.util.HashMap;
 
-public class MCUIRegistry {
+public class FilesRegistry {
     private static HashMap<String, File> Registry = new HashMap<String, File>();
 
+    /**
+     * Register a mcui file to be used later on.
+     * @param id The ID of the file, preferably in namespace:filename format.
+     * @param file The file. You can use ResourceHelper to read files from your resources folder.
+     * @see ResourceHelper
+     */
     public static void register(String id, File file) {
         Registry.put(id, file);
     }

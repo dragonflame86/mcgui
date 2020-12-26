@@ -6,6 +6,9 @@
 package cal.codes.mcgui.exceptions;
 
 public class RootElementException extends Exception {
+    /**
+     * The root element found.
+     */
     public String rootElement;
     public RootElementException(String rE) {
         rootElement = rE;

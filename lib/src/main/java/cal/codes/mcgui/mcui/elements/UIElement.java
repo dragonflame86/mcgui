@@ -13,11 +13,6 @@ public class UIElement {
         type = UIType.ROOT;
     }
 
-    public UIElement(String id) {
-        type = UIType.ROOT;
-        this.id = id;
-    }
-
     public String getId() {
         return id;
     }

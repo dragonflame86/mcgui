@@ -37,6 +37,7 @@ dependencies {
     // SpruceUI
     modImplementation "com.github.lambdaurora:spruceui:${project.spruceui_version}"
     include "com.github.lambdaurora:spruceui:${project.spruceui_version}"
+    include "org.reflections:reflections:0.9.12"
 
     shadow ("org.aperlambda:lambdajcommon:1.8.1") {
         // Minecraft already has all the google dependencies.

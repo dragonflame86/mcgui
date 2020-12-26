@@ -8,10 +8,12 @@ package cal.codes.mcgui.mcui;
 import cal.codes.mcgui.exceptions.EmptyException;
 import cal.codes.mcgui.exceptions.RootElementException;
 import cal.codes.mcgui.logging.Logger;
+import cal.codes.mcgui.mcui.elements.UIButton;
 import cal.codes.mcgui.mcui.elements.UIDocument;
 import cal.codes.mcgui.mcui.elements.UIElement;
 import cal.codes.mcgui.mcui.elements.UILabel;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -28,7 +30,7 @@ public class MCUIParser {
 
     /**
      * Parse a GUML file from a string.
-     * @param gumlFile A file object, preferably from the MCUIRegistry Class.
+     * @param gumlFile A file object, preferably from the FilesRegistry Class.
      * @param usedTemp If you used the ResourceHelper class, mark this as true.
      * @return A GumlGUI document.
      */
@@ -60,11 +62,46 @@ public class MCUIParser {
                     e.fixedWidth = fixedWidth;
                     e.x = x;
                     e.y = y;
-                    e.contents = contents;
+
+                    e.contents = new LiteralText(contents);
+
+                    if(currentNode.getAttributes().getNamedItem("lang") != null && ((Attr) currentNode.getAttributes().getNamedItem("lang")).getValue() == "true") {
+                        e.contents = new TranslatableText(contents);
+                    }
                     if(currentNode.getAttributes().getNamedItem("id") != null) {
                         e.id = ((Attr) currentNode.getAttributes().getNamedItem("id")).getValue();
                     }
                     elements.add(e);
+                }
+                if(currentNode.getNodeName() == "Button") {
+                    int x = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("x")).getValue());
+                    int y = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("y")).getValue());
+                    int width = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("width")).getValue());
+                    int height = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("height")).getValue());
+
+                    String contents = currentNode.getTextContent();
+                    String registryMethod = ((Attr) currentNode.getAttributes().getNamedItem("method")).getValue();
+
+                    UIButton o = new UIButton();
+                    o.x = x;
+                    o.y = y;
+                    o.width = width;
+                    o.height = height;
+
+                    o.contents = new LiteralText(contents);
+
+                    if(currentNode.getAttributes().getNamedItem("lang") != null && ((Attr) currentNode.getAttributes().getNamedItem("lang")).getValue() == "true") {
+                        o.contents = new TranslatableText(contents);
+                    }
+
+                    o.registryMethod = registryMethod;
+
+                    if(currentNode.getAttributes().getNamedItem("id") != null) {
+                        o.id = ((Attr) currentNode.getAttributes().getNamedItem("id")).getValue();
+                    }
+
+                    elements.add(o);
+
                 }
             }
         }

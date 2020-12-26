@@ -6,6 +6,9 @@
 package cal.codes.mcgui.exceptions;
 
 public class RegistryNotFoundException extends Exception {
+    /**
+     * Usually the key that wasn't found.
+     */
     public String message;
     public RegistryNotFoundException(String msg) {
         message = msg;

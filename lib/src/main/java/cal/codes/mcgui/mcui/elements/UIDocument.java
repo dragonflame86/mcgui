@@ -5,8 +5,11 @@
 
 package cal.codes.mcgui.mcui.elements;
 
+import cal.codes.mcgui.exceptions.RegistryNotFoundException;
 import cal.codes.mcgui.logging.Logger;
+import cal.codes.mcgui.mcui.MethodsRegistry;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
+import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.SpruceLabelWidget;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;
@@ -48,10 +51,24 @@ public class UIDocument extends SpruceScreen {
             if(element.type == UIType.ROOT) return;
             if(element.type == UIType.LABEL) {
                 UILabel label = (UILabel) element;
-                Logger.info(label.contents);
-                SpruceLabelWidget tmp = new SpruceLabelWidget(Position.of(label.x, label.y), label.getContentsAsLiteralText(), label.fixedWidth);
+                SpruceLabelWidget tmp = new SpruceLabelWidget(Position.of(label.x, label.y), label.getContentsAsText(), label.fixedWidth);
                 tmp.setVisible(true);
                 this.addChild(tmp);
+                Logger.info("Registered label with content - " + label.contents);
+                return;
+            }
+            if(element.type == UIType.BUTTON) {
+                UIButton button = (UIButton) element;
+                SpruceButtonWidget tmp = new SpruceButtonWidget(Position.of(button.x, button.y), button.width, button.height, button.getContentsAsText(), btn -> {
+                    try {
+                        MethodsRegistry.fetch(button.registryMethod).onPress(btn);
+                    } catch (RegistryNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                });
+                tmp.setVisible(true);
+                this.addChild(tmp);
+                Logger.info("Registered button with action - " + button.registryMethod);
             }
         });
     }
@@ -59,7 +76,7 @@ public class UIDocument extends SpruceScreen {
     public void addElement(UIElement element) {
         if(element.id == null) {
             nonIDElements.add(element);
-            Logger.warn("Added Element did not have an ID!");
+            Logger.warn("Added element did not have an ID!");
             return;
         }
         IDElements.put(element.id, element);

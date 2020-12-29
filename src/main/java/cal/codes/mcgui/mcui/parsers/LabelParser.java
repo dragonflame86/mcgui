@@ -22,7 +22,7 @@ public class LabelParser {
         // Label events
 
         // Label transform
-        lbl.fixedWidth = Integer.parseInt(attr.get("fixedWidth"));
+        lbl.fixedWidth = Integer.parseInt(attr.get("fixedwidth"));
         lbl.x = Integer.parseInt(attr.get("x"));
         lbl.y = Integer.parseInt(attr.get("y"));
 

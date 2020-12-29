@@ -6,6 +6,7 @@
 package cal.codes.mcgui.mcui;
 
 import cal.codes.mcgui.exceptions.RootElementException;
+import cal.codes.mcgui.logging.Logger;
 import cal.codes.mcgui.mcui.elements.UIDocument;
 import cal.codes.mcgui.mcui.parsers.ButtonParser;
 import cal.codes.mcgui.mcui.parsers.LabelParser;
@@ -13,11 +14,10 @@ import cal.codes.mcgui.mcui.parsers.SeparatorParser;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import javax.annotation.Nullable;
 import java.io.File;
-import java.util.Arrays;
 
 public class MCUIParser {
 
@@ -33,28 +33,37 @@ public class MCUIParser {
      */
     public static UIDocument parse(File mcuiFile, boolean usedTemp) throws Exception {
 
-        Document raw = Jsoup.parse(mcuiFile, "UTF-8");
+        Element raw = Jsoup.parse(mcuiFile, "UTF-8").body().children().first();
 
-        Element root = raw.root();
-        if(!Arrays.stream(validRootNames).anyMatch(str -> root.nodeName().equals(str))) throw new RootElementException(root.nodeName());
+        Logger.info(raw.toString());
 
-        UIDocument document = new UIDocument(null, new LiteralText(""));
+        if(raw == null) throw new RootElementException("");
+
+        @Nullable UIDocument document = null;
 
         // Title
-        if(root.attributes().get("title") != null) {
-            if(root.attributes().get("loc").equals("true")) {
-                document.setTitle(new TranslatableText(root.attributes().get("title")));
+        if(raw.attributes().get("title") != null) {
+            if(raw.attributes().get("loc").equals("true")) {
+                document = new UIDocument(null, new TranslatableText(raw.attributes().get("title")));
             } else {
-                document.setTitle(new LiteralText(root.attributes().get("title")));
+                document = new UIDocument(null, new LiteralText(raw.attributes().get("title")));
             }
         }
 
-        // Element
-        root.children().forEach(element -> {
-            if(element.nodeName().equals("label")) document.addElement(LabelParser.parse(element));
-            if(element.nodeName().equals("button")) document.addElement(ButtonParser.parse(element));
-            if(element.nodeName().equals("separator")) document.addElement(SeparatorParser.parse(element));
-        });
+        Logger.info(raw.children());
+        // Elements
+        for (Element element : raw.children()) {
+            Logger.info(element.nodeName());
+            if (element.nodeName().equals("label")) {
+                document.addElement(LabelParser.parse(element));
+            }
+            if (element.nodeName().equals("button")) {
+                document.addElement(ButtonParser.parse(element));
+            }
+            if (element.nodeName().equals("separator")) {
+                document.addElement(SeparatorParser.parse(element));
+            }
+        }
 
         return document;
     }

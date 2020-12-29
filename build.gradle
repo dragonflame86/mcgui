@@ -6,6 +6,8 @@ plugins {
     id 'maven-publish'
 }
 
+apply plugin: "java"
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -47,7 +49,7 @@ dependencies {
         exclude group: 'com.google.guava'
     }
 
-    include "org.jsoup:jsoup:1.13.1"
+    implementation fileTree(dir: 'libs', include: '*.jar')
 
 }
 

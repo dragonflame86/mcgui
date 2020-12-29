@@ -20,7 +20,7 @@ public class ButtonParser {
         }
 
         // Button events
-        if(attr.hasKey("@onclick")) btn.onClick = attr.get("@onclick");
+        if(attr.hasKey("@click")) btn.onClick = attr.get("@click");
 
         // Button transform
         btn.x = Integer.parseInt(attr.get("x"));

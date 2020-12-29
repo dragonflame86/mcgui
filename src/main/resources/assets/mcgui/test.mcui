@@ -5,7 +5,6 @@
 
 <screen title="test">
     <label x="50" y="50" fixedWidth="120">I want you to press this button please.</label>
-    <button x="50" y="75" width="120" height="20" @click="my_mod:testy_shit">Press me!</button>
-    <!-- <separator x="50" y="105" title="test.lang.key" width="120" lang="true"></separator> -->
-    <!-- Separators are broken atm, waiting for them to be fixed in SpruceUI -->
+    <button x="50" y="75" width="120" height="20" @click="mcgui:testy_shit">Press me!</button>
+    <separator x="50" y="105" title="test.lang.key" width="120" loc="true"></separator>
 </screen>

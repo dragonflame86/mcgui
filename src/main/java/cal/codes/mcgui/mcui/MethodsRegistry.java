@@ -8,8 +8,6 @@ package cal.codes.mcgui.mcui;
 import cal.codes.mcgui.exceptions.RegistryNotFoundException;
 import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 
-import java.io.File;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 
 public class MethodsRegistry {
@@ -26,7 +24,7 @@ public class MethodsRegistry {
 
     public static SpruceButtonWidget.PressAction fetch(String id) throws RegistryNotFoundException {
         SpruceButtonWidget.PressAction f = Registry.get(id);
-        if(f == null) throw new RegistryNotFoundException("Key (" + id.toString() + ") does not exist.");
+        if(f == null) throw new RegistryNotFoundException("Key (" + id + ") does not exist.");
         return f;
     }
 }

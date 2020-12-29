@@ -16,6 +16,6 @@ public class RootElementException extends Exception {
 
     @Override
     public String toString() {
-        return "The root element of the guml file was not valid: " + rootElement;
+        return "The root element of the mcui file was not valid: " + rootElement;
     }
 }

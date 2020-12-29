@@ -5,5 +5,5 @@
 
 <Screen title="test">
     <Label x="50" y="50" fixedWidth="120">I want you to press this button please.</Label>
-    <Button x="75" y="75" width="120" height="20" method="mcgui:test_method">Press me!</Button>
+    <Button x="75" y="75" width="120" height="20" @click="my_mod:testy_shit">Press me!</Button>
 </Screen>

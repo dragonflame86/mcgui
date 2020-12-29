@@ -12,14 +12,15 @@ import cal.codes.mcgui.mcui.elements.UIButton;
 import cal.codes.mcgui.mcui.elements.UIDocument;
 import cal.codes.mcgui.mcui.elements.UIElement;
 import cal.codes.mcgui.mcui.elements.UILabel;
+import cal.codes.mcgui.mcui.parsers.ButtonParser;
+import cal.codes.mcgui.mcui.parsers.LabelParser;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
-import org.w3c.dom.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MCUIParser {
@@ -29,91 +30,115 @@ public class MCUIParser {
     };
 
     /**
-     * Parse a GUML file from a string.
-     * @param gumlFile A file object, preferably from the FilesRegistry Class.
+     * Parse a .mcui file from a string.
+     * @param mcuiFile A file object, preferably from the FilesRegistry Class.
      * @param usedTemp If you used the ResourceHelper class, mark this as true.
-     * @return A GumlGUI document.
+     * @return A MCUI document.
      */
-    public static UIDocument parse(File gumlFile, boolean usedTemp) throws Exception {
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        Document doc = dBuilder.parse(gumlFile);
-        doc.getDocumentElement().normalize();
-        Element rootElement = doc.getDocumentElement();
-        if(!Arrays.asList(validRootNames).contains(rootElement.getNodeName())) throw new RootElementException(rootElement.getNodeName());
+    public static UIDocument parse(File mcuiFile, boolean usedTemp) throws Exception {
 
-        Logger.info("Began parse of " + gumlFile.getName() + " and root element is: " + rootElement.getNodeName());
+        Document raw = Jsoup.parse(mcuiFile, "UTF-8");
 
-        NodeList nodeList = rootElement.getChildNodes();
+        Element root = raw.root();
+        if(!Arrays.stream(validRootNames).anyMatch(str -> root.nodeName().equals(str))) throw new RootElementException(root.nodeName());
 
-        if(nodeList.getLength() == 0) throw new EmptyException();
+        UIDocument document = new UIDocument(null, new LiteralText(""));
 
-        ArrayList<UIElement> elements = new ArrayList<>();
-
-        for (int i = 0, len = nodeList.getLength(); i < len; i++) {
-            Node currentNode = nodeList.item(i);
-            if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
-                if(currentNode.getNodeName() == "Label") {
-                    int x = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("x")).getValue());
-                    int y = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("y")).getValue());
-                    int fixedWidth = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("fixedWidth")).getValue());
-                    String contents = currentNode.getTextContent();
-                    UILabel e = new UILabel();
-                    e.fixedWidth = fixedWidth;
-                    e.x = x;
-                    e.y = y;
-
-                    e.contents = new LiteralText(contents);
-
-                    if(currentNode.getAttributes().getNamedItem("lang") != null && ((Attr) currentNode.getAttributes().getNamedItem("lang")).getValue() == "true") {
-                        e.contents = new TranslatableText(contents);
-                    }
-                    if(currentNode.getAttributes().getNamedItem("id") != null) {
-                        e.id = ((Attr) currentNode.getAttributes().getNamedItem("id")).getValue();
-                    }
-                    elements.add(e);
-                }
-                if(currentNode.getNodeName() == "Button") {
-                    int x = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("x")).getValue());
-                    int y = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("y")).getValue());
-                    int width = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("width")).getValue());
-                    int height = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("height")).getValue());
-
-                    String contents = currentNode.getTextContent();
-                    String registryMethod = ((Attr) currentNode.getAttributes().getNamedItem("method")).getValue();
-
-                    UIButton o = new UIButton();
-                    o.x = x;
-                    o.y = y;
-                    o.width = width;
-                    o.height = height;
-
-                    o.contents = new LiteralText(contents);
-
-                    if(currentNode.getAttributes().getNamedItem("lang") != null && ((Attr) currentNode.getAttributes().getNamedItem("lang")).getValue() == "true") {
-                        o.contents = new TranslatableText(contents);
-                    }
-
-                    o.registryMethod = registryMethod;
-
-                    if(currentNode.getAttributes().getNamedItem("id") != null) {
-                        o.id = ((Attr) currentNode.getAttributes().getNamedItem("id")).getValue();
-                    }
-
-                    elements.add(o);
-
-                }
+        // Title
+        if(root.attributes().get("title") != null) {
+            if(root.attributes().get("loc").equals("true")) {
+                document.setTitle(new TranslatableText(root.attributes().get("title")));
+            } else {
+                document.setTitle(new LiteralText(root.attributes().get("title")));
             }
         }
 
-        Logger.info(elements);
+        // Elements
+        root.children().forEach(element -> {
+            if(element.nodeName().equals("Label")) document.addElement(LabelParser.parse(element));
+            if(element.nodeName().equals("Button")) document.addElement(ButtonParser.parse(element));
+        });
 
-        String title = ((Attr) rootElement.getAttributes().getNamedItem("title")).getValue();
-
-        UIDocument UIDoc = new UIDocument(null, new LiteralText(title));
-
-        UIDoc.addElements(elements);
-
-        return UIDoc;
+        return document;
     }
 }
+
+//        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+//        Document doc = dBuilder.parse(gumlFile);
+//        doc.getDocumentElement().normalize();
+//        Element rootElement = doc.getDocumentElement();
+//        if(!Arrays.asList(validRootNames).contains(rootElement.getNodeName())) throw new RootElementException(rootElement.getNodeName());
+//
+//        Logger.info("Began parse of " + gumlFile.getName() + " and root element is: " + rootElement.getNodeName());
+//
+//        NodeList nodeList = rootElement.getChildNodes();
+//
+//        if(nodeList.getLength() == 0) throw new EmptyException();
+//
+//        ArrayList<UIElement> elements = new ArrayList<>();
+//
+//        for (int i = 0, len = nodeList.getLength(); i < len; i++) {
+//            Node currentNode = nodeList.item(i);
+//            if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+//                if(currentNode.getNodeName() == "Label") {
+//                    int x = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("x")).getValue());
+//                    int y = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("y")).getValue());
+//                    int fixedWidth = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("fixedWidth")).getValue());
+//                    String contents = currentNode.getTextContent();
+//                    UILabel e = new UILabel();
+//                    e.fixedWidth = fixedWidth;
+//                    e.x = x;
+//                    e.y = y;
+//
+//                    e.contents = new LiteralText(contents);
+//
+//                    if(currentNode.getAttributes().getNamedItem("lang") != null && ((Attr) currentNode.getAttributes().getNamedItem("lang")).getValue() == "true") {
+//                        e.contents = new TranslatableText(contents);
+//                    }
+//                    if(currentNode.getAttributes().getNamedItem("id") != null) {
+//                        e.id = ((Attr) currentNode.getAttributes().getNamedItem("id")).getValue();
+//                    }
+//                    elements.add(e);
+//                }
+//                if(currentNode.getNodeName() == "Button") {
+//                    int x = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("x")).getValue());
+//                    int y = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("y")).getValue());
+//                    int width = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("width")).getValue());
+//                    int height = Integer.parseInt(((Attr) currentNode.getAttributes().getNamedItem("height")).getValue());
+//
+//                    String contents = currentNode.getTextContent();
+//                    String registryMethod = ((Attr) currentNode.getAttributes().getNamedItem("method")).getValue();
+//
+//                    UIButton o = new UIButton();
+//                    o.x = x;
+//                    o.y = y;
+//                    o.width = width;
+//                    o.height = height;
+//
+//                    o.contents = new LiteralText(contents);
+//
+//                    if(currentNode.getAttributes().getNamedItem("lang") != null && ((Attr) currentNode.getAttributes().getNamedItem("lang")).getValue() == "true") {
+//                        o.contents = new TranslatableText(contents);
+//                    }
+//
+//                    o.registryMethod = registryMethod;
+//
+//                    if(currentNode.getAttributes().getNamedItem("id") != null) {
+//                        o.id = ((Attr) currentNode.getAttributes().getNamedItem("id")).getValue();
+//                    }
+//
+//                    elements.add(o);
+//
+//                }
+//            }
+//        }
+//
+//        Logger.info(elements);
+//
+//        String title = ((Attr) rootElement.getAttributes().getNamedItem("title")).getValue();
+//
+//        UIDocument UIDoc = new UIDocument(null, new LiteralText(title));
+//
+//        UIDoc.addElements(elements);
+

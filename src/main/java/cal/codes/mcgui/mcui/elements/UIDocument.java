@@ -8,6 +8,7 @@ package cal.codes.mcgui.mcui.elements;
 import cal.codes.mcgui.exceptions.RegistryNotFoundException;
 import cal.codes.mcgui.logging.Logger;
 import cal.codes.mcgui.mcui.MethodsRegistry;
+import cal.codes.mcgui.utils.FinalOverwriter;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
 import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
 import me.lambdaurora.spruceui.widget.SpruceLabelWidget;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
 import me.lambdaurora.spruceui.*;
@@ -32,6 +34,13 @@ public class UIDocument extends SpruceScreen {
     public UIDocument(@Nullable Screen parent, LiteralText title) {
         super(title);
         this.parent = parent;
+    }
+    public void setTitle(Text title) {
+        try {
+            FinalOverwriter.setFinalStatic(this.getClass().getField("title"), title);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -61,14 +70,14 @@ public class UIDocument extends SpruceScreen {
                 UIButton button = (UIButton) element;
                 SpruceButtonWidget tmp = new SpruceButtonWidget(Position.of(button.x, button.y), button.width, button.height, button.getContentsAsText(), btn -> {
                     try {
-                        MethodsRegistry.fetch(button.registryMethod).onPress(btn);
+                        MethodsRegistry.fetch(button.onClick).onPress(btn);
                     } catch (RegistryNotFoundException e) {
                         e.printStackTrace();
                     }
                 });
                 tmp.setVisible(true);
                 this.addChild(tmp);
-                Logger.info("Registered button with action - " + button.registryMethod);
+                Logger.info("Registered button with action - " + button.onClick);
             }
         });
     }

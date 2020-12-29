@@ -21,7 +21,8 @@ import java.util.List;
 public class UIButton extends UIElement {
 
     public Text contents;
-    public String registryMethod;
+    
+    public String onClick;
 
     public int x;
     public int y;

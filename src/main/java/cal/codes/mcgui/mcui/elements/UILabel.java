@@ -15,6 +15,7 @@ public class UILabel extends UIElement {
     public int x;
     public int y;
 
+
     public UILabel() {
         type = UIType.LABEL;
     }

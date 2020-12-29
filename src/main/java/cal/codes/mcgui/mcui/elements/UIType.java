@@ -9,4 +9,5 @@ public enum UIType {
     ROOT,
     LABEL,
     BUTTON,
+    SEPARATOR,
 }

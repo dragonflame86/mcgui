@@ -3,7 +3,9 @@
   ~ Failure to follow this license will result in further action.
   -->
 
-<Screen title="test">
-    <Label x="50" y="50" fixedWidth="120">I want you to press this button please.</Label>
-    <Button x="75" y="75" width="120" height="20" @click="my_mod:testy_shit">Press me!</Button>
-</Screen>
+<screen title="test">
+    <label x="50" y="50" fixedWidth="120">I want you to press this button please.</label>
+    <button x="50" y="75" width="120" height="20" @click="my_mod:testy_shit">Press me!</button>
+    <!-- <separator x="50" y="105" title="test.lang.key" width="120" lang="true"></separator> -->
+    <!-- Separators are broken atm, waiting for them to be fixed in SpruceUI -->
+</screen>

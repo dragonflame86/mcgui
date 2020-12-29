@@ -5,15 +5,11 @@
 
 package cal.codes.mcgui.mcui;
 
-import cal.codes.mcgui.exceptions.EmptyException;
 import cal.codes.mcgui.exceptions.RootElementException;
-import cal.codes.mcgui.logging.Logger;
-import cal.codes.mcgui.mcui.elements.UIButton;
 import cal.codes.mcgui.mcui.elements.UIDocument;
-import cal.codes.mcgui.mcui.elements.UIElement;
-import cal.codes.mcgui.mcui.elements.UILabel;
 import cal.codes.mcgui.mcui.parsers.ButtonParser;
 import cal.codes.mcgui.mcui.parsers.LabelParser;
+import cal.codes.mcgui.mcui.parsers.SeparatorParser;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import org.jsoup.Jsoup;
@@ -26,7 +22,7 @@ import java.util.Arrays;
 public class MCUIParser {
 
     private final static String[] validRootNames = new String[] {
-            "Screen"
+            "screen"
     };
 
     /**
@@ -53,10 +49,11 @@ public class MCUIParser {
             }
         }
 
-        // Elements
+        // Element
         root.children().forEach(element -> {
-            if(element.nodeName().equals("Label")) document.addElement(LabelParser.parse(element));
-            if(element.nodeName().equals("Button")) document.addElement(ButtonParser.parse(element));
+            if(element.nodeName().equals("label")) document.addElement(LabelParser.parse(element));
+            if(element.nodeName().equals("button")) document.addElement(ButtonParser.parse(element));
+            if(element.nodeName().equals("separator")) document.addElement(SeparatorParser.parse(element));
         });
 
         return document;

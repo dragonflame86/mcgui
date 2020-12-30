@@ -51,8 +51,8 @@ public class MCUIParser {
             }
         }
 
-        if(attr.hasKey("show_title")) {
-            document.
+        if(attr.hasKey("showtitle")) {
+            document.showTitle = Boolean.parseBoolean(attr.get("showtitle"));
         }
 
         // Events

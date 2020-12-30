@@ -6,8 +6,11 @@ import net.minecraft.text.TranslatableText;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 
-public class LabelParser {
-    public static UILabel parse(Element element) {
+public class LabelParser implements Parser<UILabel> {
+    public static LabelParser getInstance() {
+        return new LabelParser();
+    }
+    public UILabel parse(Element element) {
         UILabel lbl = new UILabel();
 
         Attributes attr = element.attributes();
@@ -20,6 +23,7 @@ public class LabelParser {
         }
 
         // Label events
+        if(attr.hasKey("@render")) lbl.renderEvent = attr.get("@render");
 
         // Label transform
         lbl.fixedWidth = Integer.parseInt(attr.get("fixedwidth"));

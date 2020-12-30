@@ -9,6 +9,8 @@ public class UIElement {
     public String id;
     public UIType type;
 
+    public String renderEvent;
+
     public UIElement() {
         type = UIType.ROOT;
     }

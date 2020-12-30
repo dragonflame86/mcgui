@@ -5,7 +5,7 @@
 //
 //package cal.codes.mcgui.mixins;
 //
-//import cal.codes.mcgui.mcui.FilesRegistry;
+//import cal.codes.mcgui.mcui.DocumentRegistry;
 //import cal.codes.mcgui.mcui.MCUIParser;
 //import cal.codes.mcgui.mcui.elements.UIDocument;
 //import me.lambdaurora.spruceui.Position;
@@ -31,7 +31,7 @@
 //    private void onInit(CallbackInfo ci)
 //    {
 //        try {
-//            UIDocument doc = MCUIParser.parse(FilesRegistry.fetch("mcgui:test_file"), true);
+//            UIDocument doc = MCUIParser.parse(DocumentRegistry.fetch("mcgui:test_file"), true);
 //            this.addButton(new SpruceButtonWidget(Position.of(0, 12), 150, 20, new LiteralText("SpruceUI Test Menu"),
 //                    btn -> this.client.openScreen(doc)).asVanilla());
 //        } catch (Exception e) {

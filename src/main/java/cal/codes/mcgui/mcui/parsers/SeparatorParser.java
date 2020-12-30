@@ -6,8 +6,11 @@ import net.minecraft.text.TranslatableText;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 
-public class SeparatorParser {
-    public static UISeparator parse(Element element) {
+public class SeparatorParser implements Parser<UISeparator> {
+    public static LabelParser getInstance() {
+        return new LabelParser();
+    }
+    public UISeparator parse(Element element) {
         UISeparator sep = new UISeparator();
 
         Attributes attr = element.attributes();
@@ -20,6 +23,9 @@ public class SeparatorParser {
                 sep.title = new LiteralText(attr.get("title"));
             }
         }
+
+        // Separator events
+        if(attr.hasKey("@render")) sep.renderEvent = attr.get("@render");
 
         // Separator transform
         sep.width = Integer.parseInt(attr.get("width"));

@@ -6,8 +6,11 @@ import net.minecraft.text.TranslatableText;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 
-public class ButtonParser {
-    public static UIButton parse(Element element) {
+public class ButtonParser implements Parser<UIButton> {
+    public static LabelParser getInstance() {
+        return new LabelParser();
+    }
+    public UIButton parse(Element element) {
         UIButton btn = new UIButton();
 
         Attributes attr = element.attributes();
@@ -21,6 +24,7 @@ public class ButtonParser {
 
         // Button events
         if(attr.hasKey("@click")) btn.onClick = attr.get("@click");
+        if(attr.hasKey("@render")) btn.renderEvent = attr.get("@render");
 
         // Button transform
         btn.x = Integer.parseInt(attr.get("x"));

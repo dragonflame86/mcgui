@@ -8,19 +8,22 @@ package cal.codes.mcgui.mcui.elements;
 import cal.codes.mcgui.exceptions.RegistryNotFoundException;
 import cal.codes.mcgui.logging.Logger;
 import cal.codes.mcgui.mcui.MethodsRegistry;
-import me.lambdaurora.spruceui.Position;
+import cal.codes.mcgui.mcui.renderers.ButtonRenderer;
+import cal.codes.mcgui.mcui.renderers.LabelRenderer;
+import cal.codes.mcgui.mcui.renderers.SeparatorRenderer;
 import me.lambdaurora.spruceui.Tooltip;
 import me.lambdaurora.spruceui.screen.SpruceScreen;
-import me.lambdaurora.spruceui.widget.SpruceButtonWidget;
-import me.lambdaurora.spruceui.widget.SpruceLabelWidget;
 import me.lambdaurora.spruceui.widget.SpruceSeparatorWidget;
 import net.minecraft.client.gui.Drawable;
+import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,6 +33,12 @@ public class UIDocument extends SpruceScreen {
     public List<UIElement> nonIDElements = new ArrayList<>();
     public HashMap<String, UIElement> IDElements = new HashMap<>();
 
+    // Title
+    public boolean showTitle = true;
+
+    // Events
+    public String renderEvent;
+
     public UIDocument(@Nullable Screen parent, Text title) {
         super(title);
         this.parent = parent;
@@ -38,52 +47,36 @@ public class UIDocument extends SpruceScreen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
+        try {
+            MethodsRegistry.fetch(renderEvent).invoke(null, this);
+        } catch (RegistryNotFoundException e) {
+
+        }
+
         this.renderBackground(matrices);
         this.children().stream().filter(child -> child instanceof Drawable).forEach(child -> ((Drawable) child).render(matrices, mouseX, mouseY, delta));
         this.children().stream().filter(child -> child instanceof SpruceSeparatorWidget).forEach(child -> ((SpruceSeparatorWidget) child).render(matrices, mouseX, mouseY, delta));
 
         super.render(matrices, mouseX, mouseY, delta);
-        drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 16777215);
+
+        if(showTitle) drawCenteredText(matrices, this.textRenderer, this.title, this.width / 2, 8, 16777215);
+
         Tooltip.renderAll(this.parent, matrices);
+    }
+    public <T extends Element> T add(T element) {
+        this.addChild(element);
+        return element;
     }
 
     @Override
     protected void init() {
         super.init();
-        nonIDElements.forEach(element -> {
+        Arrays.asList((UIElement[]) ArrayUtils.addAll(nonIDElements.toArray(), IDElements.values().toArray())).forEach(element -> {
             System.out.println(element);
             if(element.type == UIType.ROOT) return;
-            if(element.type == UIType.LABEL) {
-                UILabel label = (UILabel) element;
-                SpruceLabelWidget tmp = new SpruceLabelWidget(Position.of(label.x, label.y), label.getContentsAsText(), label.fixedWidth);
-                tmp.setVisible(true);
-
-                this.addChild(tmp);
-                Logger.info("Registered label with content - " + label.contents);
-                return;
-            }
-            if(element.type == UIType.BUTTON) {
-                UIButton button = (UIButton) element;
-
-                SpruceButtonWidget tmp = new SpruceButtonWidget(Position.of(button.x, button.y), button.width, button.height, button.getContentsAsText(), btn -> {
-                    try {
-                        MethodsRegistry.fetch(button.onClick).onPress(btn);
-                    } catch (RegistryNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                });
-                tmp.setVisible(true);
-                this.addButton(tmp.asVanilla());
-                Logger.info("Registered button with action - " + button.onClick);
-            }
-            if(element.type == UIType.SEPARATOR) {
-                UISeparator separator = (UISeparator) element;
-
-                SpruceSeparatorWidget tmp = new SpruceSeparatorWidget(Position.of(separator.x, separator.y), separator.width, separator.title);
-                tmp.setVisible(true);
-                this.addChild(tmp);
-                Logger.info("Registered separator.");
-            }
+            if(element.type == UIType.LABEL) LabelRenderer.getInstance().render(this, (UILabel) element);
+            if(element.type == UIType.BUTTON) ButtonRenderer.getInstance().render(this, (UIButton) element);
+            if(element.type == UIType.SEPARATOR) SeparatorRenderer.getInstance().render(this, (UISeparator) element);
         });
     }
 

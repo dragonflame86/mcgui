@@ -4,16 +4,19 @@ MCUI files have a very similar syntax to XML.
 
 See this example:
 
-```xml
-<Screen title="An Example" showTitle="false">
-    <Label x="30" y="30" fixedWidth="190">This is an example of a MCGUI Screen, this can be shown using MinecraftClient.openScreen(Screen screen)</Label>
-    <Button x="30" y="50" width="55" height="20" method="mcgui:test_method"> This is an example of a button. </Button>
-</Screen>
+```html
+<screen title="An Example" showtitle="false">
+    <label x="30" y="30" fixedwidth="190">
+        This is an example of a MCGUI Screen, this can be shown using
+        MinecraftClient.openScreen(Screen screen)
+    </label>
+    <button x="30" y="50" width="55" height="20"> 
+        This is an example of a button. 
+    </button>
+</screen>
 ```
 
-All attributes must be surrounded in double quotes, with the root element being one of the following:
-
-- Screen
+For a list of all elements you can use, see the sidebar.
 
 Your `.mcui` files must be in your resources folder of your jar.
 Preferably in `/resources/mcgui/` however you can place it anywhere.

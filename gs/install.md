@@ -1,6 +1,6 @@
 # Installation
 
-<p style="font-size: 20px; color: orange;">Warning - McGUI is currently in pre-release, it may contain bugs.. For more infomation, <a style=" color: red;" href="">join the discord for updates.</a></p>
+<p style="font-size: 20px; color: orange;">Warning - McGUI is currently in pre-release, it may contain bugs.. For more infomation, <a style="color: orange;" href="">join the discord for updates.</a></p>
 
 First of all, add falsemaven to your repositories in `build.gradle`:
 

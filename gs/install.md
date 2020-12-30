@@ -16,8 +16,8 @@ repositories {
 Add the following dependencies to your dependencies in `build.gradle`:
 
 ```groovy
-modImplementation "cal.codes:mcgui:0.1.0-SNAPSHOT"
-include "cal.codes:mcgui:0.1.0-SNAPSHOT"
+modImplementation "cal.codes:mcgui:1.0.0-pr1"
+include "cal.codes:mcgui:1.0.0-pr1"
 ```
 
 Reload your gradle project and you should be ready.

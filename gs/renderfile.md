@@ -29,17 +29,17 @@ Lets add the following into our `onInit` method:
 
 ```java
 @Inject(method = "init", at = @At("RETURN"))
-    private void onInit(CallbackInfo ci)
-    {
-        File mcuiFile = FilesRegistry.fetch("example_mod:epic_example_file") // Fetch the .mcui file we made in https://mcgui.cf/#/gs/registerfile from the FilesRegistry
-        UIDocument doc = MCUIParser.parse(mcuiFile, true) // Parse the file, and delete any cache. You can specify to keep cache by using false instead of true.
-        this.addButton(new SpruceButtonWidget( // Add a button to the "Screen"/TitleScreen in the top right corner.
-            Position.of(0, 12), // x=0 y=12
-            150, // width=150
-            20, // height=20
-            new LiteralText("My crazy cool MCGUI"), // Whatever is on the button.
-            btn -> this.client.openScreen(doc)).asVanilla()); // When the button is clicked, open our document.
-    }
+private void onInit(CallbackInfo ci)
+{
+    UIDocument doc = FilesRegistry.fetch("example_mod:epic_example_file"); // Fetch the document we registered in https://mcgui.cf/#/gs/registerfile
+    SpruceButtonWidget widget = new SpruceButtonWidget( // Create a button in the top right corner.
+        Position.of(0, 12), // x=0 y=12
+        150, // width=150
+        20, // height=20
+        new LiteralText("My crazy cool MCGUI"), // Whatever is on the button.
+        btn -> this.client.openScreen(doc)); // Open the UIDocument when the button is pressed.
+    this.addButton(widget.asVanilla()); // Add the button to the title screen.
+}
 ```
 
 Great! You should get something similar to this when you click your button:

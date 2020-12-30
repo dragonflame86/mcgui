@@ -16,13 +16,14 @@ public void onInitialize() {
 }
 ```
 
-Now you have a mcuiFile. Lets register it into the MCGUI FileRegistry for later use!
+Now you have a mcuiFile. Lets register it into the MCGUI DocumentRegistry for later use!
 
 ```java
 @Override
 public void onInitialize() {
     File mcuiFile = ResourceHelper.getFileFromResource("path/to/my/epic.mcui", MyModInitializer.class); // Get the mcui file from resources.
-    FilesRegistry.register("example_mod:epic_example_file", mcuiFile); // Register it under the ID of example_mod:epic_example_file
+    UIDocument doc = MCUIParser.parse(mcuiFile, true); // Parse the file into a UIDocument, deleting any temporary files. You can specify false if you want to keep the temporary files created by the ResourceHelper.
+    DocumentRegistry.register("mcgui:test_file", doc); // Register it for later use.
 }
 ```
 

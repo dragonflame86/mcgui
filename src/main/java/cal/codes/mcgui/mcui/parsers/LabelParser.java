@@ -1,5 +1,6 @@
 package cal.codes.mcgui.mcui.parsers;
 
+import cal.codes.mcgui.mcui.elements.UIDocument;
 import cal.codes.mcgui.mcui.elements.UILabel;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
@@ -10,7 +11,8 @@ public class LabelParser implements Parser<UILabel> {
     public static LabelParser getInstance() {
         return new LabelParser();
     }
-    public UILabel parse(Element element) {
+    public UILabel parse(Element element, UIDocument doc) {
+        System.out.println(element);
         UILabel lbl = new UILabel();
 
         Attributes attr = element.attributes();

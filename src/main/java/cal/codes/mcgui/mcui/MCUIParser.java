@@ -64,13 +64,13 @@ public class MCUIParser {
         for (Element element : raw.children()) {
             Logger.info(element.nodeName());
             if (element.nodeName().equals("label")) {
-                document.addElement(LabelParser.getInstance().parse(element));
+                document.addElement(LabelParser.getInstance().parse(element, document));
             }
             if (element.nodeName().equals("button")) {
-                document.addElement(ButtonParser.getInstance().parse(element));
+                document.addElement(ButtonParser.getInstance().parse(element, document));
             }
             if (element.nodeName().equals("separator")) {
-                document.addElement(SeparatorParser.getInstance().parse(element));
+                document.addElement(SeparatorParser.getInstance().parse(element, document));
             }
         }
 

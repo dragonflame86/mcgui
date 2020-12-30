@@ -1,5 +1,6 @@
 package cal.codes.mcgui.mcui.parsers;
 
+import cal.codes.mcgui.mcui.elements.UIDocument;
 import cal.codes.mcgui.mcui.elements.UISeparator;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
@@ -7,10 +8,10 @@ import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 
 public class SeparatorParser implements Parser<UISeparator> {
-    public static LabelParser getInstance() {
-        return new LabelParser();
+    public static SeparatorParser getInstance() {
+        return new SeparatorParser();
     }
-    public UISeparator parse(Element element) {
+    public UISeparator parse(Element element, UIDocument doc) {
         UISeparator sep = new UISeparator();
 
         Attributes attr = element.attributes();

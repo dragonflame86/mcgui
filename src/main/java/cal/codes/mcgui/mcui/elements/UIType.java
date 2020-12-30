@@ -6,8 +6,7 @@
 package cal.codes.mcgui.mcui.elements;
 
 public enum UIType {
-    ROOT,
-    LABEL,
-    BUTTON,
+    BUTTON, CHECKBOX,
+    LABEL, ROOT,
     SEPARATOR,
 }

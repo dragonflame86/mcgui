@@ -19,11 +19,9 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,12 +45,6 @@ public class UIDocument extends SpruceScreen {
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta)
     {
-        try {
-            MethodsRegistry.fetch(renderEvent).invoke(null, this);
-        } catch (RegistryNotFoundException e) {
-
-        }
-
         this.renderBackground(matrices);
         this.children().stream().filter(child -> child instanceof Drawable).forEach(child -> ((Drawable) child).render(matrices, mouseX, mouseY, delta));
         this.children().stream().filter(child -> child instanceof SpruceSeparatorWidget).forEach(child -> ((SpruceSeparatorWidget) child).render(matrices, mouseX, mouseY, delta));
@@ -71,7 +63,19 @@ public class UIDocument extends SpruceScreen {
     @Override
     protected void init() {
         super.init();
-        Arrays.asList((UIElement[]) ArrayUtils.addAll(nonIDElements.toArray(), IDElements.values().toArray())).forEach(element -> {
+        try {
+            MethodsRegistry.fetch(renderEvent).invoke(null, this, null);
+        } catch (RegistryNotFoundException e) {
+
+        }
+        IDElements.values().forEach(element -> {
+            System.out.println(element);
+            if(element.type == UIType.ROOT) return;
+            if(element.type == UIType.LABEL) LabelRenderer.getInstance().render(this, (UILabel) element);
+            if(element.type == UIType.BUTTON) ButtonRenderer.getInstance().render(this, (UIButton) element);
+            if(element.type == UIType.SEPARATOR) SeparatorRenderer.getInstance().render(this, (UISeparator) element);
+        });
+        nonIDElements.forEach(element -> {
             System.out.println(element);
             if(element.type == UIType.ROOT) return;
             if(element.type == UIType.LABEL) LabelRenderer.getInstance().render(this, (UILabel) element);

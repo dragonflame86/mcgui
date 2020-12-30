@@ -3,8 +3,11 @@
   ~ Failure to follow this license will result in further action.
   -->
 
-<screen title="test">
-    <label x="50" y="50" fixedWidth="120">I want you to press this button please.</label>
-    <button x="50" y="75" width="120" height="20" @click="mcgui:testy_shit">Press me!</button>
-    <separator x="50" y="105" title="test.lang.key" width="120" loc="true"></separator>
+<screen @render="mcgui:screen_render_test" title="test">
+    <label x="50" y="50" @render="mcgui:screen_render_test" fixedwidth="350">I want you to press this button please.</label>
+    <button x="50" y="75" @render="mcgui:screen_render_test" width="350" height="20" @click="mcgui:testy_shit">Press me!</button>
+    <separator x="50" y="105" @render="mcgui:screen_render_test" title="test.lang.key" width="350" loc="true"></separator>
+    <checkbox @check="mcgui:checkbox_test" defaultstate="false" x="50" y="135">
+        Check me!
+    </checkbox>
 </screen>

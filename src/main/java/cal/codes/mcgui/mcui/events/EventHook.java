@@ -5,5 +5,5 @@ import cal.codes.mcgui.mcui.elements.UIElement;
 import org.jetbrains.annotations.Nullable;
 
 public interface EventHook {
-    public void invoke(@Nullable UIElement element, UIDocument document);
+    public void invoke(@Nullable UIElement element, UIDocument document, @Nullable CheckboxEventArgs checkboxEventArgs);
 }

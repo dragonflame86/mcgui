@@ -15,7 +15,7 @@ public class SeparatorRenderer implements Renderer<UISeparator> {
     @Override
     public void render(UIDocument document, UISeparator separator) {
         try {
-            MethodsRegistry.fetch(separator.renderEvent).invoke(separator, document);
+            MethodsRegistry.fetch(separator.renderEvent).invoke(separator, document, null);
         } catch (RegistryNotFoundException e) {
             e.printStackTrace();
         }

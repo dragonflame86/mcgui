@@ -16,7 +16,7 @@ public class ButtonRenderer implements Renderer<UIButton> {
     public void render(UIDocument document, UIButton button) {
         SpruceButtonWidget tmp = new SpruceButtonWidget(Position.of(button.x, button.y), button.width, button.height, button.getContentsAsText(), btn -> {
             try {
-                MethodsRegistry.fetch(button.onClick).invoke(button, document);
+                MethodsRegistry.fetch(button.onClick).invoke(button, document, null);
             } catch (RegistryNotFoundException e) {
                 e.printStackTrace();
             }

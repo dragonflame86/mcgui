@@ -4,6 +4,7 @@
  */
 package cal.codes.mcgui;
 
+import cal.codes.mcgui.logging.Logger;
 import cal.codes.mcgui.mcui.DocumentRegistry;
 import cal.codes.mcgui.mcui.MCUIParser;
 import cal.codes.mcgui.mcui.MethodsRegistry;
@@ -17,14 +18,22 @@ public class MCGuiMain implements ModInitializer {
     @Override
     public void onInitialize() {
         try {
-            MethodsRegistry.register("mcgui:testy_shit", (elm, doc) -> {
+            MethodsRegistry.register("mcgui:testy_shit", (elm, doc, cbargs) -> {
                 testMethod();
+            });
+            MethodsRegistry.register("mcgui:screen_render_test", (elm, doc, cbargs) -> {
+                if (elm == null) {
+                    Logger.info(String.format("Screen(title=%s)@render invoked.", doc.getTitle().asString()));
+                    return;
+                }
+                Logger.info(String.format("Element(type=%s)@render invoked.", elm.type.toString()));
             });
             DocumentRegistry.register("mcgui:test_file", MCUIParser.parse(ResourceHelper.getFileFromResource("assets/mcgui/test.mcui", MCGuiMain.class), true));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public void testMethod() {
         SystemToast toast = SystemToast.create(MinecraftClient.getInstance(), SystemToast.Type.TUTORIAL_HINT,
                 new LiteralText("OwO"), new LiteralText("Hello!"));

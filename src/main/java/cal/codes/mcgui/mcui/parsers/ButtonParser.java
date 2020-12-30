@@ -1,16 +1,17 @@
 package cal.codes.mcgui.mcui.parsers;
 
 import cal.codes.mcgui.mcui.elements.UIButton;
+import cal.codes.mcgui.mcui.elements.UIDocument;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 
 public class ButtonParser implements Parser<UIButton> {
-    public static LabelParser getInstance() {
-        return new LabelParser();
+    public static ButtonParser getInstance() {
+        return new ButtonParser();
     }
-    public UIButton parse(Element element) {
+    public UIButton parse(Element element, UIDocument doc) {
         UIButton btn = new UIButton();
 
         Attributes attr = element.attributes();

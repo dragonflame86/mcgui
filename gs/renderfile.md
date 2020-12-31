@@ -31,7 +31,7 @@ Lets add the following into our `onInit` method:
 @Inject(method = "init", at = @At("RETURN"))
 private void onInit(CallbackInfo ci)
 {
-    UIDocument doc = FilesRegistry.fetch("example_mod:epic_example_file"); // Fetch the document we registered in https://mcgui.cf/#/gs/registerfile
+    UIDocument doc = DocumentRegistry.fetch("example_mod:epic_example_file"); // Fetch the document we registered in https://mcgui.cf/#/gs/registerfile
     SpruceButtonWidget widget = new SpruceButtonWidget( // Create a button in the top right corner.
         Position.of(0, 12), // x=0 y=12
         150, // width=150

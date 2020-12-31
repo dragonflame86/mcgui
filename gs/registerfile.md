@@ -12,7 +12,7 @@ Also make sure to change the `path/to/my/epic.mcui` to wherever you kept your mc
 ```java
 @Override
 public void onInitialize() {
-    File mcuiFile = ResourceHelper.getFileFromResource("path/to/my/epic.mcui", MyModInitializer.class) // Get the mcui file from resources.
+    File mcuiFile = ResourceHelper.getFileFromResource("path/to/my/epic.mcui", MyModInitializer.class); // Get the mcui file from resources.
 }
 ```
 
